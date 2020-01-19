@@ -7,6 +7,8 @@ function App(){
   const todoNameRef = useRef()
   const LOCAL_STORAGE_KEY = 'todoApp.todos'
 
+  // MAgical local storage from useEffect
+
   // Checks for stored todos and then sets them
   useEffect(() => {
     const storedTodos = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY))
@@ -17,6 +19,20 @@ function App(){
   useEffect(() => {
     localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(todos))
   }, [todos])
+
+  // Changes Toggles by creating a new array, editing the value and then replacing the existing one
+  // So basically just changes the toggle fancy as
+  function toggleTodo(id){
+    const newTodos = [...todos]
+    const todo = newTodos.find(todo => todo.id === id)
+    todo.complete = !todo.complete
+    setTodos(newTodos)
+  }
+
+  function handleClearTodos(){
+    const newTodos = todos.filter(todo => !todo.complete)
+    setTodos(newTodos)
+  }
 
   // Creates todo from input
   function addTodo(e){
@@ -35,11 +51,11 @@ function App(){
   // Html (JSX)
   return (
     <>
-      <TodoList todos={todos} />
+      <TodoList todos={todos} toggleTodo={toggleTodo}/>
       <input ref={todoNameRef} type="text" />
       <button onClick={addTodo}>Add Todo</button>
-      <button>Clear Completed</button>
-      <div>0 left to do</div>
+      <button onClick={handleClearTodos}>Clear Completed</button>
+      <div>{todos.filter(todo => !todo.complete).length} left to do</div>
     </>
   )
 }
