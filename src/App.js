@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import TodoList from './TodoList'
 import uuidv4 from 'uuid/v4'
+import './style.css'
+import Button from '@material-ui/core/Button';
 
 function App(){
   const [todos, setTodos] = useState([])
@@ -50,13 +52,20 @@ function App(){
 
   // Html (JSX)
   return (
+    <div className="container">
     <>
+    <h1>To Do List:</h1>
       <TodoList todos={todos} toggleTodo={toggleTodo}/>
-      <input ref={todoNameRef} type="text" />
-      <button onClick={addTodo}>Add Todo</button>
-      <button onClick={handleClearTodos}>Clear Completed</button>
-      <div>{todos.filter(todo => !todo.complete).length} left to do</div>
+      <>
+        <div>
+          <input ref={todoNameRef} type="text" />
+          <Button variant="contained" color="primary" onClick={addTodo}>Add</Button>
+        </div>
+      </>
+      <button onClick={handleClearTodos}>Delete Completed</button>
+      <div>{todos.filter(todo => !todo.complete).length} uncompleted</div>
     </>
+    </div>
   )
 }
 
